@@ -22,22 +22,13 @@ namespace Assig1.Controllers
         // GET: Offences
         public async Task<IActionResult> Index()
         {
-            ViewBag.Title = "Offences";
-            ViewBag.Active = "Offences";
-
-            var expiationsContext = _context
-                .Offences
-                .Include(o => o.Section)
-                .OrderBy(o => o.OffenceCode);
-
+            var expiationsContext = _context.Offences.Include(o => o.Section);
             return View(await expiationsContext.ToListAsync());
         }
 
-        // GET: Offences/Details/A002
+        // GET: Offences/Details/5
         public async Task<IActionResult> Details(string id)
         {
-            ViewBag.Title = "Offences";
-            ViewBag.Active = "Offences";
             if (id == null)
             {
                 return NotFound();
@@ -54,6 +45,116 @@ namespace Assig1.Controllers
             return View(offence);
         }
 
+        // GET: Offences/Create
+        public IActionResult Create()
+        {
+            ViewData["SectionId"] = new SelectList(_context.Sections, "SectionId", "SectionId");
+            return View();
+        }
+
+        // POST: Offences/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("OffenceCode,Description,ExpiationFee,AdultLevy,CorporateFee,TotalFee,DemeritPoints,SectionId,SectionCode")] Offence offence)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(offence);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["SectionId"] = new SelectList(_context.Sections, "SectionId", "SectionId", offence.SectionId);
+            return View(offence);
+        }
+
+        // GET: Offences/Edit/5
+        public async Task<IActionResult> Edit(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var offence = await _context.Offences.FindAsync(id);
+            if (offence == null)
+            {
+                return NotFound();
+            }
+            ViewData["SectionId"] = new SelectList(_context.Sections, "SectionId", "SectionId", offence.SectionId);
+            return View(offence);
+        }
+
+        // POST: Offences/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(string id, [Bind("OffenceCode,Description,ExpiationFee,AdultLevy,CorporateFee,TotalFee,DemeritPoints,SectionId,SectionCode")] Offence offence)
+        {
+            if (id != offence.OffenceCode)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(offence);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!OffenceExists(offence.OffenceCode))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["SectionId"] = new SelectList(_context.Sections, "SectionId", "SectionId", offence.SectionId);
+            return View(offence);
+        }
+
+        // GET: Offences/Delete/5
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var offence = await _context.Offences
+                .Include(o => o.Section)
+                .FirstOrDefaultAsync(m => m.OffenceCode == id);
+            if (offence == null)
+            {
+                return NotFound();
+            }
+
+            return View(offence);
+        }
+
+        // POST: Offences/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            var offence = await _context.Offences.FindAsync(id);
+            if (offence != null)
+            {
+                _context.Offences.Remove(offence);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
 
         private bool OffenceExists(string id)
         {
