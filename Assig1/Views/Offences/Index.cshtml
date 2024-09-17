@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Assig1.Models.Offence>
+﻿@model Assig1.ViewModels.OffenceSearchViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -12,11 +12,11 @@
 
 <form asp-controller="Offences" asp-action="Index" method="get" class="row mb-2">
     <div class="col-4">
-        <input type="text" class="form-control" value="@ViewBag.searchText" name="searchText" placeholder="Search Offences..." title="Enter description" />
+        <input type="text" class="form-control" asp-for="SearchText" placeholder="Search Offences..." title="Enter description" />
     </div>
 
     <div class="col-3">
-        <select name="CategoryId" class="form-select" title="view categories"  asp-items="ViewBag.Categories" >
+        <select asp-for="CategoryId" class="form-select" title="view categories"  asp-items="Model.CategoryList" >
             <option value="value">All Expiation  Categories</option>
           
         </select>
@@ -28,70 +28,71 @@
 
 </form>
 
-@if (Model.Any())
+@if (Model.Offences.Any())
 {
     
     <table class="table">
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Description)
+                    @Html.DisplayNameFor(model => model.Offences.First().Description)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.ExpiationFee)
+                    @Html.DisplayNameFor(model => model.Offences.First().ExpiationFee)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.AdultLevy)
+                    @Html.DisplayNameFor(model => model.Offences.First().AdultLevy)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.CorporateFee)
+                    @Html.DisplayNameFor(model => model.Offences.First().CorporateFee)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TotalFee)
+                    @Html.DisplayNameFor(model => model.Offences.First().TotalFee)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.DemeritPoints)
+                    @Html.DisplayNameFor(model => model.Offences.First().DemeritPoints)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.SectionCode)
+                    @Html.DisplayNameFor(model => model.Offences.First().SectionCode)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Section)
+                    @Html.DisplayNameFor(model => model.Offences.First().Section)
                 </th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-    @foreach (var item in Model) {
+            @foreach (var offence in Model.Offences)
+            {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Description)
+                        @Html.DisplayFor(modelItem => offence.Description)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ExpiationFee)
+                        @Html.DisplayFor(modelItem => offence.ExpiationFee)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.AdultLevy)
+                        @Html.DisplayFor(modelItem => offence.AdultLevy)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CorporateFee)
+                        @Html.DisplayFor(modelItem => offence.CorporateFee)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TotalFee)
+                        @Html.DisplayFor(modelItem => offence.TotalFee)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DemeritPoints)
+                        @Html.DisplayFor(modelItem => offence.DemeritPoints)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.SectionCode)
+                        @Html.DisplayFor(modelItem => offence.SectionCode)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Section.SectionId)
+                        @Html.DisplayFor(modelItem => offence.Section.SectionId)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.OffenceCode">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.OffenceCode">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.OffenceCode">Delete</a>
+                        <a asp-action="Edit" asp-route-id="@offence.OffenceCode">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@offence.OffenceCode">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@offence.OffenceCode">Delete</a>
                 </td>
             </tr>
     }
