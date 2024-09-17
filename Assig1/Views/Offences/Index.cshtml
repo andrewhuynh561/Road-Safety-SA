@@ -9,6 +9,21 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<form asp-controller="Offences" asp-action="Index" method="post" class="row mb-2">
+    <div class="col-4">
+        <input type="text" class="form-control"  maxlength="100" placeholder="Search Offences..." title="Enter description" />
+    </div>
+
+    <div class="col-3">
+    
+    </div>
+
+    <div class="col-4">
+        <button type="submit">  Search</button>
+    </div>
+
+</form>
 <table class="table">
     <thead>
         <tr>
