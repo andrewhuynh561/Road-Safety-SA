@@ -20,8 +20,15 @@ namespace Assig1.Controllers
         }
 
         // GET: Offences
-        public async Task<IActionResult> Index(string searchText)
-        {   
+        public async Task<IActionResult> Index(string searchText, int? CategoryId)
+        {
+            #region Expiation Categories
+            ViewBag.Categories = new SelectList(await _context.ExpiationCategories.ToListAsync(), "CategoryId", "CategoryName");
+
+            #endregion
+
+
+            #region Offences query
             ViewBag.SearchText = searchText;
             var expiationsContext = _context.Offences
                 .OrderBy(o =>o.Description)
@@ -33,6 +40,12 @@ namespace Assig1.Controllers
                     .Where(o => o.Description.Contains(searchText));
 
             }
+            if (CategoryId != null)
+            {
+                expiationsContext = expiationsContext
+                    .Where(i => i.Section.CategoryId == CategoryId.Value);
+            }
+            #endregion
             return View(await expiationsContext.ToListAsync());
         }
 

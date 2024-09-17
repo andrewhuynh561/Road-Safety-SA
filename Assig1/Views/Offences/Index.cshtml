@@ -10,13 +10,16 @@
     <a asp-action="Create">Create New</a>
 </p>
 
-<form asp-controller="Offences" asp-action="Index" method="post" class="row mb-2">
+<form asp-controller="Offences" asp-action="Index" method="get" class="row mb-2">
     <div class="col-4">
         <input type="text" class="form-control" value="@ViewBag.searchText" name="searchText" placeholder="Search Offences..." title="Enter description" />
     </div>
 
     <div class="col-3">
-    
+        <select name="CategoryId" class="form-select" title="view categories"  asp-items="ViewBag.Categories" >
+            <option value="value">All Expiation  Categories</option>
+          
+        </select>
     </div>
 
     <div class="col-4">
