@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Assig1.Data;
 using Assig1.Models;
+using Assig1.ViewModels;
 
 namespace Assig1.Controllers
 {
@@ -20,33 +21,65 @@ namespace Assig1.Controllers
         }
 
         // GET: Offences
-        public async Task<IActionResult> Index(string searchText, int? CategoryId)
+        public async Task<IActionResult> Index(OffenceSearchViewModel om)
         {
-            #region Expiation Categories
-            ViewBag.Categories = new SelectList(await _context.ExpiationCategories.ToListAsync(), "CategoryId", "CategoryName");
+            if (om == null)
+            {
+                om =new OffenceSearchViewModel();
+            }
 
-            #endregion
+            //Fetch categories
+            var categories = _context.ExpiationCategories
+                .Where(ec => !ec.ParentCategoryId.HasValue)
+                .OrderBy(ec => ec.CategoryName)
+                .Select(ec => new {ec.CategoryId,ec.CategoryName})
+                .ToList();
 
+            om.CategoryList = new SelectList(categories, "CategoryId", "CategoryName", om.CategoryId);
 
-            #region Offences query
-            ViewBag.SearchText = searchText;
             var expiationsContext = _context.Offences
-                .OrderBy(o =>o.Description)
-                .AsQueryable();
+               .OrderBy(o =>o.Description)
+               .AsQueryable();
 
-            if (!string.IsNullOrWhiteSpace(searchText))
+
+            if (!string.IsNullOrWhiteSpace(om.SearchText))
             {
                 expiationsContext = expiationsContext
-                    .Where(o => o.Description.Contains(searchText));
+                    .Where(o => o.Description.Contains(om.SearchText));
 
             }
-            if (CategoryId != null)
+            if (om.CategoryId != null)
             {
                 expiationsContext = expiationsContext
-                    .Where(i => i.Section.CategoryId == CategoryId.Value);
+                    .Where(i => i.Section.CategoryId == om.CategoryId.Value);
             }
-            #endregion
-            return View(await expiationsContext.ToListAsync());
+
+            return View(om);
+            //#region Expiation Categories
+            //ViewBag.Categories = new SelectList(await _context.ExpiationCategories.ToListAsync(), "CategoryId", "CategoryName");
+
+            //#endregion
+
+
+            //#region Offences query
+            //ViewBag.SearchText = searchText;
+            //var expiationsContext = _context.Offences
+            //    .OrderBy(o =>o.Description)
+            //    .AsQueryable();
+
+            //if (!string.IsNullOrWhiteSpace(searchText))
+            //{
+            //    expiationsContext = expiationsContext
+            //        .Where(o => o.Description.Contains(searchText));
+
+            //}
+            //if (CategoryId != null)
+            //{
+            //    expiationsContext = expiationsContext
+            //        .Where(i => i.Section.CategoryId == CategoryId.Value);
+            //}
+            //#endregion
+            //return View(await expiationsContext.ToListAsync());
         }
 
         // GET: Offences/Details/5
