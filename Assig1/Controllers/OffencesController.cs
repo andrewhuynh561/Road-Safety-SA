@@ -30,7 +30,7 @@ namespace Assig1.Controllers
 
             //Fetch categories
             var categories = _context.ExpiationCategories
-                .Where(ec => !ec.ParentCategoryId.HasValue)
+                .Where(ec => ec.ParentCategoryId.HasValue)
                 .OrderBy(ec => ec.CategoryName)
                 .Select(ec => new {ec.CategoryId,ec.CategoryName})
                 .ToList();
@@ -53,6 +53,8 @@ namespace Assig1.Controllers
                 expiationsContext = expiationsContext
                     .Where(i => i.Section.CategoryId == om.CategoryId.Value);
             }
+            om.Offences = await expiationsContext.OrderBy(o => o.Description).ToListAsync();
+
 
             return View(om);
             //#region Expiation Categories

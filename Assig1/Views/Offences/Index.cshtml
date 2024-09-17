@@ -17,8 +17,8 @@
 
     <div class="col-3">
         <select asp-for="CategoryId" class="form-select" title="view categories"  asp-items="Model.CategoryList" >
-            <option value="value">All Expiation  Categories</option>
-          
+            <option value="">All Expiation  Categories</option>
+                
         </select>
     </div>
 
@@ -28,9 +28,8 @@
 
 </form>
 
-@if (Model.Offences.Any())
+@if (Model.Offences != null && Model.Offences.Any())
 {
-    
     <table class="table">
         <thead>
             <tr>
@@ -64,38 +63,38 @@
         <tbody>
             @foreach (var offence in Model.Offences)
             {
-            <tr>
-                <td>
+                <tr>
+                    <td>
                         @Html.DisplayFor(modelItem => offence.Description)
-                </td>
-                <td>
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => offence.ExpiationFee)
-                </td>
-                <td>
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => offence.AdultLevy)
-                </td>
-                <td>
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => offence.CorporateFee)
-                </td>
-                <td>
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => offence.TotalFee)
-                </td>
-                <td>
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => offence.DemeritPoints)
-                </td>
-                <td>
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => offence.SectionCode)
-                </td>
-                <td>
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => offence.Section.SectionId)
-                </td>
-                <td>
+                    </td>
+                    <td>
                         <a asp-action="Edit" asp-route-id="@offence.OffenceCode">Edit</a> |
                         <a asp-action="Details" asp-route-id="@offence.OffenceCode">Details</a> |
                         <a asp-action="Delete" asp-route-id="@offence.OffenceCode">Delete</a>
-                </td>
-            </tr>
-    }
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 }
@@ -103,3 +102,4 @@ else
 {
     <p>No offences found.</p>
 }
+   
