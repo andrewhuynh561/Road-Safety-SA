@@ -20,9 +20,19 @@ namespace Assig1.Controllers
         }
 
         // GET: Offences
-        public async Task<IActionResult> Index()
-        {
-            var expiationsContext = _context.Offences.Include(o => o.Section);
+        public async Task<IActionResult> Index(string searchText)
+        {   
+            ViewBag.SearchText = searchText;
+            var expiationsContext = _context.Offences
+                .OrderBy(o =>o.Description)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(searchText))
+            {
+                expiationsContext = expiationsContext
+                    .Where(o => o.Description.Contains(searchText));
+
+            }
             return View(await expiationsContext.ToListAsync());
         }
 
