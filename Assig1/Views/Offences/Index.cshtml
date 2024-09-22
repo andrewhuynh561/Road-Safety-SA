@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Search Offences</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -12,21 +12,25 @@
 
 <form asp-controller="Offences" asp-action="Index" method="get" class="row mb-2">
     <div class="col-4">
-        <input type="text" class="form-control" asp-for="SearchText" placeholder="Search Offences..." title="Enter description" />
+        <input type="text" class="form-control" asp-for="SearchText" id="formGroupExampleInput" placeholder="Search Offences..." title="Enter description" />
     </div>
 
     <div class="col-3">
-        <select asp-for="CategoryId" class="form-select" title="view categories"  asp-items="Model.CategoryList" >
+        <select asp-for="CategoryId" class="form-select" title="view categories" asp-items="Model.CategoryList" aria-label="Default select example">
             <option value="">All Expiation  Categories</option>
                 
         </select>
     </div>
 
     <div class="col-4">
-        <button type="submit">  Search</button>
+        <button class="btn btn-primary" type="submit">  Search</button>
     </div>
 
 </form>
+
+<h3>Aggregate Statistics</h3>
+<p>Total Offences Found: @Model.TotalOffences</p>
+<p>Total Fees Collected: @Model.TotalFees</p>
 
 @if (Model.Offences != null && Model.Offences.Any())
 {

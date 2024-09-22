@@ -55,6 +55,8 @@ namespace Assig1.Controllers
             }
             om.Offences = await expiationsContext.OrderBy(o => o.Description).ToListAsync();
 
+            om.TotalOffences = om.Offences.Count;
+            om.TotalFees = om.Offences.Sum(o => o.TotalFee ?? 0);
 
             return View(om);
             //#region Expiation Categories
