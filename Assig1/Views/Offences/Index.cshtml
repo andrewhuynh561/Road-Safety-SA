@@ -6,7 +6,6 @@
 
 <h1 class="mb-4">Search Offences</h1>
 
-<!-- Create New Button -->
 <p>
     <a asp-action="Create" class="btn btn-success">Create New Offence</a>
 </p>
@@ -14,8 +13,8 @@
 <form asp-controller="Offences" asp-action="Index" method="get" class="row g-3 mb-4">
 
     <div class="col-md-4">
-        <label for="formGroupExampleInput" class="form-label">Search by Description</label>
-        <input type="text" class="form-control" asp-for="SearchText" id="formGroupExampleInput" placeholder="Enter description" title="Enter description" />
+        <label for="SearchText" class="form-label">Search by Description</label>
+        <input type="text" class="form-control" asp-for="SearchText" id="searchText" placeholder="Enter description ..." title="Enter description" />
     </div>
 
     <div class="col-md-3">
@@ -44,6 +43,16 @@
     </div>
 </div>
 
+<h3>Offence Categories Chart</h3>
+
+<div>
+    <svg width="100%" height="400px" class="border border-primary rounded p-2"></svg>
+</div>
+
+<script type="module">
+    import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+</script>
+
 @if (Model.Offences != null && Model.Offences.Any())
 {
     <table class="table table-striped table-hover">
@@ -51,12 +60,9 @@
             <tr>
                 <th>@Html.DisplayNameFor(model => model.Offences.First().Description)</th>
                 <th>@Html.DisplayNameFor(model => model.Offences.First().ExpiationFee)</th>
-                <th>@Html.DisplayNameFor(model => model.Offences.First().AdultLevy)</th>
-                <th>@Html.DisplayNameFor(model => model.Offences.First().CorporateFee)</th>
                 <th>@Html.DisplayNameFor(model => model.Offences.First().TotalFee)</th>
                 <th>@Html.DisplayNameFor(model => model.Offences.First().DemeritPoints)</th>
                 <th>@Html.DisplayNameFor(model => model.Offences.First().SectionCode)</th>
-                <th>@Html.DisplayNameFor(model => model.Offences.First().Section.SectionId)</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -66,12 +72,9 @@
                 <tr>
                     <td>@Html.DisplayFor(modelItem => offence.Description)</td>
                     <td>@Html.DisplayFor(modelItem => offence.ExpiationFee)</td>
-                    <td>@Html.DisplayFor(modelItem => offence.AdultLevy)</td>
-                    <td>@Html.DisplayFor(modelItem => offence.CorporateFee)</td>
                     <td>@Html.DisplayFor(modelItem => offence.TotalFee)</td>
                     <td>@Html.DisplayFor(modelItem => offence.DemeritPoints)</td>
                     <td>@Html.DisplayFor(modelItem => offence.SectionCode)</td>
-                    <td>@Html.DisplayFor(modelItem => offence.Section.SectionId)</td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@offence.OffenceCode" class="btn btn-warning btn-sm">Edit</a>
                         <a asp-action="Details" asp-route-id="@offence.OffenceCode" class="btn btn-info btn-sm">Details</a>
@@ -86,3 +89,4 @@ else
 {
     <p class="alert alert-warning">No offences found.</p>
 }
+
