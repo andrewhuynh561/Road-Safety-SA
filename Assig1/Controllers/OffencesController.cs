@@ -85,6 +85,22 @@ namespace Assig1.Controllers
             //#endregion
             //return View(await expiationsContext.ToListAsync());
         }
+        // In OffencesController.cs
+        [HttpGet]
+        public async Task<IActionResult> OffencesByCategory()
+        {
+            var data = await _context.Offences
+                .GroupBy(o => o.Section.Category.CategoryName)  // Group by Category Name
+                .Select(g => new
+                {
+                    CategoryName = g.Key,   // Category Name
+                    TotalOffences = g.Count()   // Count of Offenses
+                })
+                .ToListAsync();
+
+            return Json(data);  // Return data as JSON
+        }
+
 
         // GET: Offences/Details/5
         public async Task<IActionResult> Details(string id)

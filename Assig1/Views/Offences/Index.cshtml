@@ -45,16 +45,113 @@
 
 <h3>Offence Categories Chart</h3>
 
+<h2>Offenses by Category</h2>
 <div>
-    <svg width="100%" height="400px" class="border border-primary rounded p-2"></svg>
+    <svg id="offencesGraph" width="100%" height="400px" class="border border-primary rounded p-2"></svg>
 </div>
 
-<script type="module">
-    import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
-</script>
+
+@section Scripts {
+    <script type="module">
+        import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+        const svg = d3.select('#offencesGraph');
+
+        let w = svg.node().getBoundingClientRect().width;
+        let h = svg.node().getBoundingClientRect().height;
+
+        const chartMargins = {
+            left: 40,
+            right: 25,
+            top: 25,
+            bottom: 80
+        };
+
+        w = w - (chartMargins.left + chartMargins.right);
+        h = h - (chartMargins.top + chartMargins.bottom);
+
+        // Fetch data from the server
+        fetch(`/Offences/OffencesByCategory`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.length > 0) {
+                    buildGraph(data);
+                } else {
+                    console.log('No data found');
+                }
+            })
+            .catch(err => console.log(err));
+
+        function buildGraph(dataSet) {
+            // Find the maximum number of offenses
+            let maxOffences = d3.max(dataSet, d => d.TotalOffences);
+
+            // Define yScale
+            let yScale = d3.scaleLinear()
+                .domain([0, maxOffences])
+                .range([h, 0]);
+
+            // Define xScale for category names
+            let xScale = d3.scaleBand()
+                .domain(dataSet.map(d => d.CategoryName))
+                .range([0, w])
+                .paddingInner(0.1);
+
+            const chartGroup = svg.append('g')
+                .classed('chartGroup', true)
+                .attr('transform', `translate(${chartMargins.left},${chartMargins.top})`);
+
+            // Create bars
+            chartGroup.selectAll('rect')
+                .data(dataSet)
+                .enter()
+                .append('rect')
+                .attr('x', d => xScale(d.CategoryName))
+                .attr('y', d => yScale(d.TotalOffences))
+                .attr('width', xScale.bandwidth())
+                .attr('height', d => h - yScale(d.TotalOffences))
+                .attr('fill', 'steelblue')
+                .on('mouseover', function(event, d) {
+                    d3.select(this).attr('fill', 'orange');
+                })
+                .on('mouseout', function(event, d) {
+                    d3.select(this).attr('fill', 'steelblue');
+                });
+
+            // Add text labels on the bars
+            chartGroup.selectAll('text')
+                .data(dataSet)
+                .enter()
+                .append('text')
+                .attr('x', d => xScale(d.CategoryName) + xScale.bandwidth() / 2)
+                .attr('y', d => yScale(d.TotalOffences) - 5)
+                .attr('text-anchor', 'middle')
+                .text(d => d.TotalOffences);
+
+            // Add y-axis
+            const yAxis = d3.axisLeft(yScale).ticks(5);
+            chartGroup.append('g')
+                .classed('axis y', true)
+                .call(yAxis);
+
+            // Add x-axis with category names
+            const xAxis = d3.axisBottom(xScale);
+            chartGroup.append('g')
+                .attr('transform', `translate(0, ${h})`)
+                .classed('axis x', true)
+                .call(xAxis)
+                .selectAll('text')
+                .attr('transform', 'rotate(-45)')
+                .style('text-anchor', 'end');
+        }
+    </script>
+}
+
+
+
 
 @if (Model.Offences != null && Model.Offences.Any())
-{
+{   
     <table class="table table-striped table-hover">
         <thead class="table-dark">
             <tr>
