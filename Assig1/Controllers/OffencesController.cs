@@ -85,21 +85,30 @@ namespace Assig1.Controllers
             //#endregion
             //return View(await expiationsContext.ToListAsync());
         }
-        // In OffencesController.cs
         [HttpGet]
-        public async Task<IActionResult> OffencesByCategory()
+        public async Task<IActionResult> GetOffenceData(int? categoryId)
         {
-            var data = await _context.Offences
-                .GroupBy(o => o.Section.Category.CategoryName)  // Group by Category Name
-                .Select(g => new
+            // Fetch offences, optionally filtered by category
+            var offencesQuery = _context.Offences.AsQueryable();
+
+            if (categoryId.HasValue)
+            {
+                offencesQuery = offencesQuery.Where(o => o.Section.CategoryId == categoryId.Value);
+            }
+            
+            var data = await offencesQuery
+                .Select(o => new
                 {
-                    CategoryName = g.Key,   // Category Name
-                    TotalOffences = g.Count()   // Count of Offenses
+                    o.Description,
+                    ExpiationFee = o.ExpiationFee ?? 0,
+                    TotalFee = o.TotalFee ?? 0
                 })
                 .ToListAsync();
 
-            return Json(data);  // Return data as JSON
+            return Json(data);
         }
+
+
 
 
         // GET: Offences/Details/5
