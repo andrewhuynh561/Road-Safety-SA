@@ -130,6 +130,10 @@ namespace Assig1.Controllers
             return View(offence);
         }
 
+
+
+
+
         // GET: Offences/Create
         public IActionResult Create()
         {

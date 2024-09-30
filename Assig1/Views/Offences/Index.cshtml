@@ -25,7 +25,7 @@
     </div>
 
     <div class="col-md-3 align-self-end">
-        <button class="btn btn-primary " type="submit">Search</button>
+        <button id="searchBtn" class="btn btn-primary " type="submit">Search</button>
     </div>
 </form>
 
@@ -43,10 +43,10 @@
     </div>
 </div>
 
-<h3>Offence Categories Chart</h3>
+<h3>Total Offences Fee For Selected Category Chart</h3>
 
 <div>
-    <svg width="100%" height="400px" class="border border-primary rounded p-2"></svg>
+    <svg width="100%" height="800px" class="border border-primary rounded p-2"></svg>
 </div>
 
 @section Scripts {
@@ -64,19 +64,20 @@
         const chartMargins = {
             left: 40,
             right: 25,
-            top: 25,
-            bottom: 80
+            top: 30,
+            bottom: 250
         };
 
         w = w - (chartMargins.left + chartMargins.right);
         h = h - (chartMargins.top + chartMargins.bottom);
 
-        document.querySelector('[name="CategoryId"]').addEventListener('change', (event) => {
+        document.querySelector('[name="CategoryId"]').addEventListener('click', (event) => {
             let categoryId = event.target.value;
             console.log("categoryId: " + categoryId);
 
             // Fetch the data (number of offences per category)
-            if (categoryId > 0) { 
+            if (categoryId > 0) {
+                clearGraph();
                 fetch(`/Offences/GetOffenceData?categoryId=${categoryId}`)
                     .then(response => {
                         console.log("response status: " + response.status);
@@ -84,7 +85,7 @@
                         return response.json();
                     })
                     .then(data => {
-                        console.log("Fetched data: ", data);  // Log data to ensure it's correct
+                        console.log("Fetched data: ", data);  // Log data 
                         buildGraph(data);
                     })
                     .catch(err => console.log(err.message));
@@ -92,32 +93,107 @@
             }
         });
 
+        function clearGraph() {
+            d3.select('svg').selectAll("g").remove()
+        }
         function buildGraph(dataSet) {
-            // Log dataset and verify structure
             console.log("DataSet: ", dataSet);
+            let maxTotalFee = 0;
 
             // Handle empty dataset
             if (!dataSet || dataSet.length === 0) {
                 console.log("Dataset is empty or undefined.");
             } else {
                 // Calculate the maximum value for totalFee
-                let maxTotalItems = d3.max(dataSet, d => d.totalFee || 0);
+                maxTotalFee = d3.max(dataSet, d => d.totalFee || 0);
 
-                // Log the result
-                console.log("Max totalItems: " + maxTotalItems);
+                console.log("Max maxTotalFee: " + maxTotalFee);
             }
 
-
-            // //4 calculate the maximum value to be displayed
-            // let totalItemsRange = d3.max(dataSet, d => d.TotalFee || 0);
-            // let maxTotalItems = totalItemsRange[1];
-
-            // console.log("Max totalItems: " + maxTotalItems);
-            // console.log("Max totalItems: " + totalItemsRange);
             const barMargin = 10;
             const barWidth = w / dataSet.length;
             console.log(barMargin)
             console.log(barWidth)
+
+            //8 create a YScale
+            let yScale = d3.scaleLinear()
+                .domain([0, maxTotalFee])
+                .range([h, 0]);
+
+            //10 create xScale
+            let desArray = Array.from(dataSet, (d, i) => d.description);
+            console.log("array: " + desArray);
+
+            let xScale = d3.scaleBand()
+                .domain(desArray)
+                .range([0, w])
+                .paddingInner(0.1)
+
+            // console.log("xScale: "+ xScale("March"))
+
+            const chartGroup = svg.append('g')
+                .classed('chartGroup', true)
+                .attr('transform', `translate(${chartMargins.left},${chartMargins.top})`);
+
+            //5 select all 'g' elements and bind the dataSet
+            let barGroups = chartGroup
+                .selectAll('g')
+                .data(dataSet);
+
+            //10 implement yScale
+            var newBarGroups = barGroups.enter()
+                .append('g')
+                .attr('transform', (d, i) => {
+                    return `translate(${xScale(d.description)},${yScale(d.totalFee)})`;
+                    // returns transform ="translate(x,y)"
+                }); // end transform
+
+            //10 implement yScale
+            //11 animate
+            newBarGroups
+                .append('rect')
+                .attr('x', 0)
+                .attr('height', (d, i) => { return h - yScale(d.totalFee); })
+                .attr('width', xScale.bandwidth())
+                .attr('fill', 'transparent')
+                .transition().duration((d, i) => i * 500) //perform transition over 1s
+                .delay((d, i) => i + 200) // transition each col 1 by 1
+                .attr('y', 0)
+                .attr('height', (d, i) => { return h - yScale(d.totalFee); })
+                .style("fill", (d, i) => { return `rgb(20, 20, ${i * 15 + 80})` })
+
+
+            //14 create bar text
+            newBarGroups
+                .append('text')
+                .attr("text-anchor", "middle")
+                .attr('x', (d, i) => { return xScale.bandwidth() / 2; })
+                .attr('y', 20)
+                .attr('fill', 'white')
+                .style('font-size', '1em')
+                .text((d, i) => d.totalFee.toLocaleString());
+
+            //11 create the axis and add it to the svg
+            //12.5 append the y-Axix to the chartGroup
+            let yAxis = d3.axisLeft(yScale);  //declare the axis generator
+            chartGroup.append('g')
+                .classed('axis y', true)
+                .call(yAxis);
+
+            //13 append the x-Axis to the chartGroup
+            let xAxis = d3.axisBottom(xScale); // declare the axis generator
+            chartGroup.append('g')
+                .attr('transform', `translate(0, ${h})`)
+                .classed('axis x', true)
+                .call(xAxis);
+
+            chartGroup.selectAll('.axis.x text')
+                .attr("transform", "rotate(-70)")
+                .attr("dx", "-0.8em")
+                .attr("dy", "0.25em")
+                .style("text-anchor", "end")
+                .style("font-size", "0.9em");
+
         }
     </script>
 }
