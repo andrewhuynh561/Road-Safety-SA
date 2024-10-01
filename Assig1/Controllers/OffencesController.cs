@@ -112,7 +112,7 @@ namespace Assig1.Controllers
 
 
         // GET: Offences/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(string id, string statusFilter, int? year)
         {
             if (id == null)
             {
@@ -121,13 +121,52 @@ namespace Assig1.Controllers
 
             var offence = await _context.Offences
                 .Include(o => o.Section)
-                .FirstOrDefaultAsync(m => m.OffenceCode == id);
+                .Where(o => o.OffenceCode == id)
+                .FirstOrDefaultAsync();
+
             if (offence == null)
             {
                 return NotFound();
             }
 
-            return View(offence);
+            // Fetch expiations 
+            var expiationsQuery = _context.Expiations
+                .Where(e => e.OffenceCode == id);
+
+            if (!string.IsNullOrEmpty(statusFilter))
+            {
+                expiationsQuery = expiationsQuery.Where(e => e.StatusCode == statusFilter);
+            }
+
+            if (year.HasValue)
+            {
+                expiationsQuery = expiationsQuery.Where(e => e.IssueDate.HasValue && e.IssueDate.Value.Year == year.Value);
+            }
+
+            // Execute the query 
+            var expiations = await expiationsQuery
+                .Select(e => new ExpiationDetailViewModel
+                {
+                    IncidentStartDate = e.IncidentStartDate,
+                    IssueDate = e.IssueDate,
+                    TotalFee = e.TotalFeeAmt,
+                    Status = e.StatusCode
+                })
+                .ToListAsync();
+
+            // Build the view model
+            var viewModel = new OffenceDetailViewModel
+            {
+                OffenceCode = offence.OffenceCode,
+                Description = offence.Description,
+                SectionCode = offence.Section.SectionCode,
+                TotalExpiations = expiations.Count,
+                Expiations = expiations,
+                StatusFilter = statusFilter,
+                Year = year
+            };
+
+            return View(viewModel);
         }
 
 
