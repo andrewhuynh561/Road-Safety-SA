@@ -153,7 +153,12 @@ namespace Assig1.Controllers
                     Status = e.StatusCode
                 })
                 .ToListAsync();
+            var averageFee = expiations.Count > 0 ? expiations.Average(e => e.TotalFee ?? 0) : 0;
 
+            var expiationsPerMonth = expiations
+            .Where(e => e.IssueDate.HasValue)
+            .GroupBy(e => e.IssueDate.Value.ToString("MMMM yyyy"))  // Group by month and year
+            .ToDictionary(g => g.Key, g => g.Count());
             // Build the view model
             var viewModel = new OffenceDetailViewModel
             {
@@ -163,7 +168,9 @@ namespace Assig1.Controllers
                 TotalExpiations = expiations.Count,
                 Expiations = expiations,
                 StatusFilter = statusFilter,
-                Year = year
+                Year = year,
+                AverageFee = averageFee,
+                ExpiationsPerMonth = expiationsPerMonth
             };
 
             return View(viewModel);
