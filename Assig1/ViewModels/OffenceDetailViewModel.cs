@@ -19,22 +19,14 @@ namespace Assig1.ViewModels
 
         // List of filtered expiations
         public List<ExpiationDetailViewModel> Expiations { get; set; }
+ 
+        [Display(Name = "Average Fee Per Expiation")]
+        [DisplayFormat(DataFormatString = "{0:C}")]
+        public double AverageFee { get; set; }
 
-        //// Summary statistics
-        //[Display(Name = "Total Fees Collected")]
-        //[DisplayFormat(DataFormatString = "{0:C}")]
-        //public int TotalFeesCollected => Expiations.Sum(e => e.TotalFee ?? 0);
-
-        //[Display(Name = "Average Fees per Expiation")]
-        //[DisplayFormat(DataFormatString = "{0:C}")]
-        //public double AverageFee => Expiations.Count > 0 ? Expiations.Average(e => e.TotalFee ?? 0) : 0;
-
-        //[Display(Name = "Expiation Status Frequency")]
-        //public Dictionary<string, int> StatusFrequency => Expiations
-        //    .GroupBy(e => e.Status)
-        //    .ToDictionary(g => g.Key, g => g.Count());
-
-        // Selected filters
+        // Expiations per month for the dashboard
+        [Display(Name = "Expiations Per Month")]
+        public Dictionary<string, int> ExpiationsPerMonth { get; set; }
         public string StatusFilter { get; set; }
         public int? Year { get; set; }
 
