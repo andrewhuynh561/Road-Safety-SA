@@ -1,28 +1,58 @@
 ﻿@model Assig1.ViewModels.OffenceDetailViewModel
 
-<div class="container my-4">
-    <!-- Offence Details Card -->
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Offence Dashboard</h2>
+
+  
     <div class="card mb-4">
-        <div class="card-header bg-primary text-white">
-            <h2>Offence Details</h2>
-        </div>
-        <div class="card-body">
+        <div class="card-body">         
+             <h2>Offence Details</h2>      
             <p><strong>Offence Code:</strong> @Model.OffenceCode</p>
             <p><strong>Description:</strong> @Model.Description</p>
             <p><strong>Section Code:</strong> @Model.SectionCode</p>
         </div>
     </div>
 
-    <!-- Expiation Details Table -->
-    <h3 class="mb-3">Expiation Details</h3>
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Key Insights</h5>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Total Expiations
+                    <span class="">@Model.TotalExpiations</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Average Fee Per Expiation
+                    <span class="">@Model.AverageFee.ToString("C")</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Expiations Per Month</h5>
+            <ul class="list-group">
+                @foreach (var month in Model.ExpiationsPerMonth)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        @month.Key
+                        <span class="">@month.Value</span>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+    <h3 class="text-center mb-3">Expiation Details</h3>
     <div class="table-responsive">
-        <table class="table table-striped table-bordered">
+        <table class="table table-bordered table-hover">
             <thead class="table-dark">
                 <tr>
-                    <th scope="col">Incident Date</th>
-                    <th scope="col">Issue Date</th>
-                    <th scope="col">Total Fee</th>
-                    <th scope="col">Status</th>
+                    <th>Incident Date</th>
+                    <th>Issue Date</th>
+                    <th>Total Fee</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
