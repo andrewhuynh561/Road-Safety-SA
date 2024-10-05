@@ -1,0 +1,126 @@
+﻿@model Assig1.Models.Expiation
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Expiation</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ExpId" />
+            <input type="hidden" asp-for="IncidentStartDate" />
+            <input type="hidden" asp-for="IncidentStartTime" />
+            <div class="form-group">
+                <label asp-for="IssueDate" class="control-label"></label>
+                <input asp-for="IssueDate" class="form-control" />
+                <span asp-validation-for="IssueDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OffencePenaltyAmt" class="control-label"></label>
+                <input asp-for="OffencePenaltyAmt" class="form-control" />
+                <span asp-validation-for="OffencePenaltyAmt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OffenceLevyAmt" class="control-label"></label>
+                <input asp-for="OffenceLevyAmt" class="form-control" />
+                <span asp-validation-for="OffenceLevyAmt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CorporateFeeAmt" class="control-label"></label>
+                <input asp-for="CorporateFeeAmt" class="form-control" />
+                <span asp-validation-for="CorporateFeeAmt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalFeeAmt" class="control-label"></label>
+                <input asp-for="TotalFeeAmt" class="form-control" />
+                <span asp-validation-for="TotalFeeAmt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EnforceWarningNoticeFeeAmt" class="control-label"></label>
+                <input asp-for="EnforceWarningNoticeFeeAmt" class="form-control" />
+                <span asp-validation-for="EnforceWarningNoticeFeeAmt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BacContentExp" class="control-label"></label>
+                <input asp-for="BacContentExp" class="form-control" />
+                <span asp-validation-for="BacContentExp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VehicleSpeed" class="control-label"></label>
+                <input asp-for="VehicleSpeed" class="form-control" />
+                <span asp-validation-for="VehicleSpeed" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LocationSpeedLimit" class="control-label"></label>
+                <input asp-for="LocationSpeedLimit" class="form-control" />
+                <span asp-validation-for="LocationSpeedLimit" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OffenceCode" class="control-label"></label>
+                <select asp-for="OffenceCode" class="form-control" asp-items="ViewBag.OffenceCode"></select>
+                <span asp-validation-for="OffenceCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DriverState" class="control-label"></label>
+                <select asp-for="DriverState" class="form-control" asp-items="ViewBag.DriverState"></select>
+                <span asp-validation-for="DriverState" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RegState" class="control-label"></label>
+                <select asp-for="RegState" class="form-control" asp-items="ViewBag.RegState"></select>
+                <span asp-validation-for="RegState" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LsaCode" class="control-label"></label>
+                <select asp-for="LsaCode" class="form-control" asp-items="ViewBag.LsaCode"></select>
+                <span asp-validation-for="LsaCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CameraLocationId" class="control-label"></label>
+                <select asp-for="CameraLocationId" class="form-control" asp-items="ViewBag.CameraLocationId"></select>
+                <span asp-validation-for="CameraLocationId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CameraTypeCode" class="control-label"></label>
+                <select asp-for="CameraTypeCode" class="form-control" asp-items="ViewBag.CameraTypeCode"></select>
+                <span asp-validation-for="CameraTypeCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhotoRejCode" class="control-label"></label>
+                <select asp-for="PhotoRejCode" class="form-control" asp-items="ViewBag.PhotoRejCode"></select>
+                <span asp-validation-for="PhotoRejCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StatusCode" class="control-label"></label>
+                <select asp-for="StatusCode" class="form-control" asp-items="ViewBag.StatusCode"></select>
+                <span asp-validation-for="StatusCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WithdrawCode" class="control-label"></label>
+                <select asp-for="WithdrawCode" class="form-control" asp-items="ViewBag.WithdrawCode"></select>
+                <span asp-validation-for="WithdrawCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TypeCode" class="control-label"></label>
+                <select asp-for="TypeCode" class="form-control" asp-items="ViewBag.TypeCode"></select>
+                <span asp-validation-for="TypeCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

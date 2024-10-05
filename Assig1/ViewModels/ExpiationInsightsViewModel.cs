@@ -4,6 +4,11 @@ namespace Assig1.ViewModels
 {
     public class ExpiationInsightsViewModel
     {
+
+        public string StatusFilter { get; set; }
+        public DateOnly? Year { get; set; }
+        public DateOnly? Month { get; set; }
+
         [Display(Name="Maximum Fine")]
         [DisplayFormat(DataFormatString ="{0:C}")]
         public int MaxFine {  get; set; }
@@ -17,7 +22,7 @@ namespace Assig1.ViewModels
 
         public int MaxSpeed { get; set; }
 
-        public int MinSpeed { get; set; }
+        public double AvgSpeed { get; set; }
 
 
         [Display(Name = "Frequency")]

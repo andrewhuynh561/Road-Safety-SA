@@ -1,0 +1,23 @@
+﻿@model Assig1.ViewModels.ExpiationInsightsViewModel
+
+<h2>Expiation Insights</h2>
+
+<!-- Filter Information -->
+<p>
+    <strong>Status Filter:</strong> @Model.StatusFilter<br />
+    <strong>Year:</strong> @Model.Year ?? "All Years"<br />
+    <strong>Month:</strong> @(Model.Month.HasValue ? new DateTime(2024, Model.Month.Value, 1).ToString("MMMM") : "All Months")
+</p>
+
+<!-- Complex Stats -->
+<h3>Statistics</h3>
+<ul>
+    <li><strong>Maximum Fine:</strong> @Model.MaxFine.ToString("C")</li>
+    <li><strong>Minimum Fine:</strong> @Model.MinFine.ToString("C")</li>
+    <li><strong>Average Fine:</strong> @Model.AvgFine.ToString("C")</li>
+
+    <li><strong>Maximum Speed:</strong> @Model.MaxSpeed</li>
+    <li><strong>Minimum Speed:</strong> @Model.MinSpeed</li>
+
+    <li><strong>Frequency of Expiations:</strong> @Model.Frequency</li>
+</ul>

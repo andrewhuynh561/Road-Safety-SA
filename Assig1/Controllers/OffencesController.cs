@@ -204,6 +204,7 @@ namespace Assig1.Controllers
             return Json(expiationsPerMonth);
         }
 
+
         // GET: Offences/Create
         public IActionResult Create()
         {
