@@ -1,23 +1,78 @@
 ﻿@model Assig1.ViewModels.ExpiationInsightsViewModel
 
-<h2>Expiation Insights</h2>
+<div class="container my-5">
+    <h2 class="mb-4">Expiation Insights</h2>
 
-<!-- Filter Information -->
-<p>
-    <strong>Status Filter:</strong> @Model.StatusFilter<br />
-    <strong>Year:</strong> @Model.Year ?? "All Years"<br />
-    <strong>Month:</strong> @(Model.Month.HasValue ? new DateTime(2024, Model.Month.Value, 1).ToString("MMMM") : "All Months")
-</p>
+    <!-- Filter Information -->
+    <div class="alert alert-info">
+    <p>
+        <strong>Status Filter:</strong> @(string.IsNullOrEmpty(Model.StatusFilter) ? "No Filter" : Model.StatusFilter)<br />
+        <strong>Year:</strong> @(Model.Year.HasValue ? Model.Year.Value.Year.ToString() : "All Years")<br />
+        <strong>Month:</strong> @(Model.Month.HasValue ? Model.Month.Value.ToString("MMMM") : "All Months")
+    </p>
+</div>
 
-<!-- Complex Stats -->
-<h3>Statistics</h3>
-<ul>
-    <li><strong>Maximum Fine:</strong> @Model.MaxFine.ToString("C")</li>
-    <li><strong>Minimum Fine:</strong> @Model.MinFine.ToString("C")</li>
-    <li><strong>Average Fine:</strong> @Model.AvgFine.ToString("C")</li>
 
-    <li><strong>Maximum Speed:</strong> @Model.MaxSpeed</li>
-    <li><strong>Minimum Speed:</strong> @Model.MinSpeed</li>
+    <!-- Complex Stats Section -->
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <strong>Fine Statistics</strong>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Maximum Fine
+                            <span class="">@Model.MaxFine.ToString("C")</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Minimum Fine
+                            <span class="">@Model.MinFine.ToString("C")</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Average Fine
+                            <span class="">@Model.AvgFine.ToString("C")</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
-    <li><strong>Frequency of Expiations:</strong> @Model.Frequency</li>
-</ul>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <strong>Speed Statistics</strong>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Maximum Speed
+                            <span class="">@Model.MaxSpeed</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Average Speed
+                            <span class="">@Model.AvgSpeed</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <strong>Offence Frequency</strong>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Frequency of Expiations
+                            <span class="b">@Model.Frequency</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
