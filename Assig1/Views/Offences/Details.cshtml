@@ -43,6 +43,82 @@
             </ul>
         </div>
     </div>
+    <h3>Expiations Per Month</h3>
+    <div>
+        <svg id="expiationsPerMonthChart" width="100%" height="500px" class="border border-primary rounded p-2"></svg>
+    </div>
+
+    @section Scripts {
+        <script type="module">
+            import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+            const svg = d3.select('#expiationsPerMonthChart');
+            const offenceCode = '@Model.OffenceCode';
+            let w = svg.node().getBoundingClientRect().width;
+            let h = svg.node().getBoundingClientRect().height;
+
+            const chartMargins = { left: 50, right: 20, top: 20, bottom: 120 };
+            w = w - (chartMargins.left + chartMargins.right);
+            h = h - (chartMargins.top + chartMargins.bottom);
+
+            // Fetch data for the specific offenceCode
+            fetch(`/Offences/GetExpiationsPerMonthData?offenceCode=${offenceCode}`)
+                .then(response => response.json())
+                .then(data => buildExpiationsPerMonthChart(data))
+                .catch(err => console.error('Error fetching data:', err));
+
+            function buildExpiationsPerMonthChart(dataSet) {
+                console.log("Expiations Data:", dataSet);
+                const maxExpiations = d3.max(dataSet, d => d.count);
+
+                const yScale = d3.scaleLinear()
+                    .domain([0, maxExpiations])
+                    .range([h, 0]);
+
+                const xScale = d3.scaleBand()
+                    .domain(dataSet.map(d => d.month))
+                    .range([0, w])
+                    .padding(0.1);
+
+                const chartGroup = svg.append('g')
+                    .attr('transform', `translate(${chartMargins.left},${chartMargins.top})`);
+
+                // Y-Axis
+                chartGroup.append('g')
+                    .call(d3.axisLeft(yScale));
+
+                // X-Axis
+                chartGroup.append('g')
+                    .attr('transform', `translate(0,${h})`)
+                    .call(d3.axisBottom(xScale))
+                    .selectAll("text")
+                    .attr("transform", "rotate(-45)")
+                    .style("text-anchor", "end");
+
+                // Bars
+                chartGroup.selectAll('rect')
+                    .data(dataSet)
+                    .enter()
+                    .append('rect')
+                    .attr('x', d => xScale(d.month))
+                    .attr('y', d => yScale(d.count))
+                    .attr('width', xScale.bandwidth())
+                    .attr('height', d => h - yScale(d.count))
+                    .attr('fill', 'steelblue');
+
+                // Text Labels on Bars
+                chartGroup.selectAll('.text')
+                    .data(dataSet)
+                    .enter()
+                    .append('text')
+                    .attr('x', d => xScale(d.month) + xScale.bandwidth() / 2)
+                    .attr('y', d => yScale(d.count) - 5)
+                    .attr('text-anchor', 'middle')
+                    .text(d => d.count)
+                    .attr('fill', 'black');
+            }
+        </script>
+    }
 
     <h3 class="text-center mb-3">Expiation Details</h3>
     <div class="table-responsive">

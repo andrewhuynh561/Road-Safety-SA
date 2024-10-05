@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Assig1.Data;
 using Assig1.Models;
 using Assig1.ViewModels;
+using System.Globalization;
 
 namespace Assig1.Controllers
 {
@@ -108,9 +109,6 @@ namespace Assig1.Controllers
             return Json(data);
         }
 
-
-
-
         // GET: Offences/Details/5
         public async Task<IActionResult> Details(string id, string statusFilter, int? year)
         {
@@ -120,7 +118,6 @@ namespace Assig1.Controllers
             }
 
             var offence = await _context.Offences
-                .Include(o => o.Section)
                 .Where(o => o.OffenceCode == id)
                 .FirstOrDefaultAsync();
 
@@ -129,7 +126,10 @@ namespace Assig1.Controllers
                 return NotFound();
             }
 
-            // Fetch expiations 
+            var section = await _context.Sections
+                .Where(s => s.SectionId == offence.SectionId)
+                .FirstOrDefaultAsync();
+
             var expiationsQuery = _context.Expiations
                 .Where(e => e.OffenceCode == id);
 
@@ -143,7 +143,6 @@ namespace Assig1.Controllers
                 expiationsQuery = expiationsQuery.Where(e => e.IssueDate.HasValue && e.IssueDate.Value.Year == year.Value);
             }
 
-            // Execute the query 
             var expiations = await expiationsQuery
                 .Select(e => new ExpiationDetailViewModel
                 {
@@ -153,18 +152,22 @@ namespace Assig1.Controllers
                     Status = e.StatusCode
                 })
                 .ToListAsync();
+
+            // Calculate average 
             var averageFee = expiations.Count > 0 ? expiations.Average(e => e.TotalFee ?? 0) : 0;
 
+            // Group expiations by month and year
             var expiationsPerMonth = expiations
-            .Where(e => e.IssueDate.HasValue)
-            .GroupBy(e => e.IssueDate.Value.ToString("MMMM yyyy"))  // Group by month and year
-            .ToDictionary(g => g.Key, g => g.Count());
+                .Where(e => e.IssueDate.HasValue)
+                .GroupBy(e => e.IssueDate.Value.ToString("MMMM yyyy"))  // Group by month and year
+                .ToDictionary(g => g.Key, g => g.Count());
+
             // Build the view model
             var viewModel = new OffenceDetailViewModel
             {
                 OffenceCode = offence.OffenceCode,
                 Description = offence.Description,
-                SectionCode = offence.Section.SectionCode,
+                SectionCode = section?.SectionCode, 
                 TotalExpiations = expiations.Count,
                 Expiations = expiations,
                 StatusFilter = statusFilter,
@@ -176,9 +179,30 @@ namespace Assig1.Controllers
             return View(viewModel);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetExpiationsPerMonthData(string offenceCode)
+        {
+            if (string.IsNullOrEmpty(offenceCode))
+            {
+                return BadRequest("OffenceCode is required");
+            }
 
+            var expiations = await _context.Expiations
+                .Where(e => e.OffenceCode == offenceCode && e.IssueDate.HasValue)
+                .ToListAsync();
 
+            var expiationsPerMonth = expiations
+                .GroupBy(e => e.IssueDate.Value.ToString("MMMM yyyy"))  // Group by month and year
+                .Select(g => new
+                {
+                    Month = g.Key,
+                    Count = g.Count()
+                })
+                .OrderByDescending(g => g.Month)  // Order by most recent month
+                .ToList();
 
+            return Json(expiationsPerMonth);
+        }
 
         // GET: Offences/Create
         public IActionResult Create()
