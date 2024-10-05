@@ -57,24 +57,38 @@
             let w = svg.node().getBoundingClientRect().width;
             let h = svg.node().getBoundingClientRect().height;
 
-            const chartMargins = { left: 50, right: 20, top: 20, bottom: 120 };
+            const chartMargins = { 
+                left: 50, 
+                right: 20, 
+                top: 20, 
+                bottom: 120 
+            };
             w = w - (chartMargins.left + chartMargins.right);
             h = h - (chartMargins.top + chartMargins.bottom);
 
             // Fetch data for the specific offenceCode
             fetch(`/Offences/GetExpiationsPerMonthData?offenceCode=${offenceCode}`)
                 .then(response => response.json())
-                .then(data => buildExpiationsPerMonthChart(data))
-                .catch(err => console.error('Error fetching data:', err));
+                .then(data => buildGraph(data))
+                .catch(err => console.error('Error fetching:', err));
 
-            function buildExpiationsPerMonthChart(dataSet) {
+            function buildGraph(dataSet) {
                 console.log("Expiations Data:", dataSet);
                 const maxExpiations = d3.max(dataSet, d => d.count);
+                console.log(maxExpiations);
 
+
+                const barMargin = 10;
+                const barWidth = w / dataSet.length;
+                console.log(barMargin)
+                console.log(barWidth)
+
+                //creaye yscale
                 const yScale = d3.scaleLinear()
                     .domain([0, maxExpiations])
                     .range([h, 0]);
 
+                 //create xscale
                 const xScale = d3.scaleBand()
                     .domain(dataSet.map(d => d.month))
                     .range([0, w])
