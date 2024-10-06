@@ -38,7 +38,7 @@ namespace Assig1.Controllers
           
             var expiations = await expiationsQuery.ToListAsync();
 
-            // Calculate statistics for fine amounts and speeds
+            // Calculate statistics 
             var maxFine = expiations.Max(e => e.TotalFeeAmt ?? 0);
             var minFine = expiations.Min(e => e.TotalFeeAmt ?? 0);
             var avgFine = expiations.Average(e => e.TotalFeeAmt ?? 0);

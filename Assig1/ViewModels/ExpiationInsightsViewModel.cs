@@ -7,7 +7,6 @@ namespace Assig1.ViewModels
 
         public string StatusFilter { get; set; }
         public DateOnly? Year { get; set; }
-        public DateOnly? Month { get; set; }
 
         [Display(Name="Maximum Fine")]
         [DisplayFormat(DataFormatString ="{0:C}")]

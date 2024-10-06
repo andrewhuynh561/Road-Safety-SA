@@ -89,7 +89,7 @@ namespace Assig1.Controllers
         [HttpGet]
         public async Task<IActionResult> GetOffenceData(int? categoryId)
         {
-            // Fetch offences, optionally filtered by category
+            // Fetch offences
             var offencesQuery = _context.Offences.AsQueryable();
 
             if (categoryId.HasValue)
@@ -156,7 +156,6 @@ namespace Assig1.Controllers
             // Calculate average 
             var averageFee = expiations.Count > 0 ? expiations.Average(e => e.TotalFee ?? 0) : 0;
 
-            // Group expiations by month and year
             var expiationsPerMonth = expiations
                 .Where(e => e.IssueDate.HasValue)
                 .GroupBy(e => e.IssueDate.Value.ToString("MMMM yyyy"))  // Group by month and year
@@ -184,7 +183,7 @@ namespace Assig1.Controllers
         {
             if (string.IsNullOrEmpty(offenceCode))
             {
-                return BadRequest("OffenceCode is required");
+                return NotFound();
             }
 
             var expiations = await _context.Expiations
