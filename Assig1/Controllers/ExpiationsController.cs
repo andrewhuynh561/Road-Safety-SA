@@ -22,7 +22,7 @@ namespace Assig1.Controllers
 
         // GET: Expiations
 
-        public async Task<IActionResult> Index(string statusFilter, DateOnly? year, DateOnly? month)
+        public async Task<IActionResult> Index(string statusFilter, DateOnly? year)
         {
             var expiationsQuery = _context.Expiations.AsQueryable();
 
@@ -35,17 +35,17 @@ namespace Assig1.Controllers
                 expiationsQuery = expiationsQuery.Where(e => e.IssueDate.HasValue && e.IssueDate.Value.Year == year.Value.Year);
             }
 
-            if (month.HasValue)
-            {
-                expiationsQuery = expiationsQuery.Where(e => e.IssueDate.HasValue && e.IssueDate.Value.Month == month.Value.Month);
-            }
-
+          
             var expiations = await expiationsQuery.ToListAsync();
 
             // Calculate statistics for fine amounts and speeds
             var maxFine = expiations.Max(e => e.TotalFeeAmt ?? 0);
             var minFine = expiations.Min(e => e.TotalFeeAmt ?? 0);
             var avgFine = expiations.Average(e => e.TotalFeeAmt ?? 0);
+
+            var minBAC = expiations.Where(e => e.BacContentExp.HasValue).Min(e => e.BacContentExp);
+            var maxBAC = expiations.Where(e => e.BacContentExp.HasValue).Max(e => e.BacContentExp);
+            var avgBAC = expiations.Where(e => e.BacContentExp.HasValue).Average(e => e.BacContentExp);
 
             var maxSpeed = expiations.Where(e => e.VehicleSpeed.HasValue).Max(e => e.VehicleSpeed.Value);
             var avgSpeed = expiations.Where(e => e.VehicleSpeed.HasValue).Average(e => e.VehicleSpeed.Value);
@@ -58,7 +58,9 @@ namespace Assig1.Controllers
             {
                 StatusFilter = statusFilter,
                 Year = year,
-                Month = month,
+                MinBAC= minBAC,
+                MaxBAC= maxBAC,
+                AvgBAC= avgBAC,
                 MaxFine = maxFine,
                 MinFine = minFine,
                 AvgFine = avgFine,

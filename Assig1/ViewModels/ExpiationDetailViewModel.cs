@@ -19,5 +19,12 @@ namespace Assig1.ViewModels
 
         [Display(Name = "Status")]
         public string Status { get; set; }
+
+
+        [Display(Name = "Vehicle Speed")]
+        public int? VehicleSpeed { get; set; }
+
+        [Display(Name = "BAC Level")]
+        public decimal? BacContentExp { get; set; }
     }
 }

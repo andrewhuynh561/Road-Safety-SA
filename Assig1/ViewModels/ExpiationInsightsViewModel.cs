@@ -18,7 +18,19 @@ namespace Assig1.ViewModels
         [DisplayFormat(DataFormatString = "{0:C}")]
         public int MinFine { get; set; }
 
+        [Display(Name = "Average Fine")]
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public double AvgFine { get; set; }
+
+        [Display(Name = "Minimum BAC Level")]
+        public decimal? MinBAC { get; set; }
+
+        [Display(Name = "Maximum BAC Level")]
+        public decimal? MaxBAC { get; set; }
+
+        [Display(Name = "Average BAC Level")]
+        [DisplayFormat(DataFormatString = "{0:C}")]
+        public decimal? AvgBAC { get; set; }
 
         public int MaxSpeed { get; set; }
 

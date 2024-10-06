@@ -6,9 +6,7 @@
     <!-- Filter Information -->
     <div class="alert alert-info">
     <p>
-        <strong>Status Filter:</strong> @(string.IsNullOrEmpty(Model.StatusFilter) ? "No Filter" : Model.StatusFilter)<br />
-        <strong>Year:</strong> @(Model.Year.HasValue ? Model.Year.Value.Year.ToString() : "All Years")<br />
-        <strong>Month:</strong> @(Model.Month.HasValue ? Model.Month.Value.ToString("MMMM") : "All Months")
+        <strong>Year:</strong> @(Model.Year.HasValue ? Model.Year.Value.Year.ToString("YYYY") : "All Years")<br />
     </p>
 </div>
 
@@ -54,7 +52,21 @@
                             Average Speed
                             <span class="">@Model.AvgSpeed</span>
                         </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Maximum BAC
+                            <span class="">@Model.MaxBAC</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Minimum BAC
+                            <span class="">@Model.MinBAC</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Average BAC
+                            <span class="">@Model.AvgBAC</span>
+                        </li>
+                    
                     </ul>
+                
                 </div>
             </div>
         </div>
