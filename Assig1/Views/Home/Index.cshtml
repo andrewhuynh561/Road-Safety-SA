@@ -9,8 +9,56 @@
 <div class="row">
     <div class="col-8">
         <p>
-            This assignment focuses on utilizing Models, ViewModels, Lambda/LINQ and Razor Code to present expiation data collected by the SA Government. 
+            This assignment focuses on utilizing Models, ViewModels, Lambda/LINQ, and Razor Code to present expiation data collected by the SA Government. 
             Through this project, you will gain hands-on experience in querying large data sets using the Entity Framework ORM, retrieving data, manipulating data, and building interactive web applications to visualize and present information.
         </p>
     </div>
 </div>
+
+<!-- Div to hold the map -->
+<div class="row">
+    <div class="col-12">
+        <h3 class="text-dark">Explore Expiation Data on the Map</h3>
+        <div id="mapDiv" style="width: 100%; height: 600px;"></div> <!-- Map will render here -->
+    </div>
+</div>
+
+<!-- ArcGIS JavaScript API -->
+<script src="https://js.arcgis.com/4.30/"></script>
+<script>
+    require([
+        "esri/views/MapView",
+        "esri/WebMap",
+        "esri/widgets/BasemapGallery",
+        "esri/widgets/Expand"
+    ], function(MapView, WebMap, BasemapGallery, Expand) {
+
+        // Use your ArcGIS Online WebMap ID
+        const webmap = new WebMap({
+            portalItem: {
+                id: "60342aa3b2774fdcbcca728c583afd98" // Your webmap ID
+            }
+        });
+
+        // Initialize the MapView centered on Adelaide
+        const view = new MapView({
+            container: "mapDiv",  // Div where the map is displayed
+            map: webmap,
+            zoom: 10,  // Zoom level for Adelaide
+            center: [138.6007, -34.9285]  // Coordinates for Adelaide City
+        });
+
+        // Add a BasemapGallery widget to allow users to switch basemaps
+        const basemapGallery = new BasemapGallery({
+            view: view
+        });
+
+        const expand = new Expand({
+            view: view,
+            content: basemapGallery
+        });
+
+        // Add the widget to the UI
+        view.ui.add(expand, "top-right");
+    });
+</script>

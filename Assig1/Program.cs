@@ -23,9 +23,16 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }
+app.UseCors(b =>
+{
+    b.AllowAnyMethod();
+    b.AllowAnyOrigin();
+    b.AllowAnyHeader();
+});
 app.UseStaticFiles();
 
 app.UseRouting();
+
 
 app.UseAuthorization();
 

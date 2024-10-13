@@ -42,4 +42,10 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\geojson\dataCrash1310.geojson">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
