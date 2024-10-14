@@ -10,35 +10,61 @@
  
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index">Expiations SA!</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <div class="navbar-nav flex-grow-1">
-                        <a asp-controller="Home" asp-action="Index" class="@IsActive("Home")" title="Expiations Home">Home</a>
-                        <a asp-controller="Home" asp-action="About" class="@IsActive("About")" title="Expiations About">About</a>
-                        <a asp-controller="Offences" asp-action="Index" class="@IsActive("Offences")" title="View Offence Categories">Offences</a>
-                        <a asp-controller="Expiations" asp-action="Index" class="@IsActive("Expiations")" title="View Expiation Data For Selected Offence">Expiations</a>
-                       
+    <header class="custom-header">
+        <div class="container-lg">
+            <div class="row branding-row-wrapper d-flex">
+                <div class="col-sm-6">
+                    <!-- Logo Section -->
+                    <div class="d-flex align-items-center site-logo-wrapper">
+                        <a href="https://www.sa.gov.au/" title="Home" rel="home" class="site-logo d-block">
+                            <img src="/images/sa-government.png" alt="Home" height="60"> 
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <!-- Logo Section -->
+                    <div class="d-flex align-items-center site-logo-wrapper">
+                        <a href="https://data.sa.gov.au/" title="Home" rel="home" class="site-logo d-block">
+                            <img src="/images/dataSA_logo.png" alt="Home" height="60"> 
+                        </a>
                     </div>
                 </div>
             </div>
-        </nav>
+
+        <!-- Navbar with sections at the bottom -->
+            <div class="main-menu-wrapper d-flex justify-content-between align-items-center row g-0">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <div class="collapse navbar-collapse">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link text-white @IsActive("Home")" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white @IsActive("About")" asp-controller="Home" asp-action="About">About</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white @IsActive("Offences")" asp-controller="Offences" asp-action="Index">Offences</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white @IsActive("Expiations")" asp-controller="Expiations" asp-action="Index">Expiations</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer ">
         <div class="container text-center">
-            &copy; @System.DateTime.Now.Year - Assig1 - <a asp-controller="Home" asp-action="About">About</a>
+            &copy; @System.DateTime.Now.Year - Road Safety SA - <a asp-controller="Home" asp-action="About">About</a>
+            <p>Email:andrew.huynh561@gmail.com</p>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

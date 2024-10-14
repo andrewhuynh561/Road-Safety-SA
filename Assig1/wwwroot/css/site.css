@@ -16,3 +16,145 @@ html {
 body {
   margin-bottom: 60px;
 }
+/* Example: wwwroot/css/site.css */
+body {
+    background-image: url('/images/statement-background-dark.jpg'); /* Update the path */
+    background-size: cover; /* Ensure the image covers the entire background */
+    background-position: center; /* Center the background image */
+    background-attachment: fixed; /* Make it fixed while scrolling */
+    background-repeat: no-repeat; /* Avoid repeating the image */
+    color: #f0f0ed; /* Change text color to contrast with the background */
+}
+.custom-header {
+    background-image: url('/images/.jpg'); /* Update the path */
+    
+    padding: 1rem 0;
+    position: relative;
+}
+/* Specific section background */
+.bg-custom {
+    /*background-image: url('/images/header_background.jpg');*/ /* Path to your image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white; /* Adjust text color for readability */
+}
+/* Positioning the pseudo-element on the right */
+.middle-header-wrapper:after {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    content: "";
+    width: 50%; /* This might be used for a visual background or design element */
+    background-color: #f1f1f1; /* Example color */
+}
+
+/* Ensure logo and its container are properly aligned */
+.branding-row-wrapper .site-logo-wrapper,
+.branding-row-wrapper .secondary-logo-wrapper {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+
+.branding-row-wrapper .site-logo-wrapper {
+    height: 100%;
+    display: flex;
+    align-items: center; /* Vertical centering */
+}
+
+.site-logo img {
+    height: auto; /* Maintain the logo's aspect ratio */
+    max-height: 60px; /* Max height to ensure the logo doesn't grow too large */
+}
+
+/* Flexbox utility classes to align content properly */
+.d-flex {
+    display: flex !important;
+}
+
+* Navbar styles */
+/* Full navbar wrapper background */
+.main-menu-wrapper {
+    background-color: #004a92; /* Navbar background */
+    padding: 0.5rem 0; /* Padding to add height */
+    border-bottom: 3px solid #003366; /* Optional border at the bottom */
+}
+.collapse.navbar-collapse {
+    background-color: #343434; /* Background color for the collapsed menu */
+    padding: 1rem; /* Add some padding inside the collapsed menu */
+    border-top: 1px solid #003366; /* Optional border at the top */
+    text-align: center; /* Center align the collapsed items */
+}
+/* Styling for the navbar list and items */
+.navbar-nav {
+    display: flex;
+    list-style: none; /* Remove bullet points */
+    padding-left: 0;
+    margin: 0;
+    padding:0;
+    align-items: center;
+
+}
+.border-start {
+    border-left: none !important;
+}
+
+.border-end {
+    border-right: none !important;
+}
+
+/* Ensure each item has proper spacing */
+.navbar-nav .nav-item {
+margin: 0 1rem; /* Horizontal spacing between nav items */
+border-right: none; /* Explicitly remove any right border */
+}
+
+/* Link styling */
+.navbar-nav .nav-link {
+color: #ffffff; /* White text */
+padding: 1rem 1.5rem; /* Padding around each link */
+text-transform: uppercase; /* Uppercase text */
+font-weight: 600; /* Make text bold */
+text-align: center; /* Center the text */
+transition: all 0.3s ease; /* Smooth hover transition */
+background-color: transparent; /* No background by default */
+}
+
+/* Hover effect */
+.navbar-nav .nav-link:hover {
+    background-color: #003366; 
+    color: #ffffff; 
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.navbar-nav .nav-link.active {
+        background-color: #ffd700;
+        color: #004a92;
+    }
+
+/* Centering the map and text elements */
+.bg-custom {
+  
+    text-align: center; /* Center text horizontally */
+    padding: 2rem 1rem;
+}
+
+/* Center the welcome section */
+.bg-warning {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    text-align: center;
+}
+
+/* Center the entire row that holds the text */
+.row .col-8 {
+    margin: 0 auto; /* Centers the column in the row */
+    text-align: center; /* Center the text in this column */
+}
+.row .col-12 {
+    margin: 0 auto; /* Centers the column in the row */
+    text-align: center; /* Center the text in this column */
+}
+
