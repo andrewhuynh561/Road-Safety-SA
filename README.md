@@ -11,7 +11,6 @@ Welcome to the **Road Safety SA** project! This project visualizes expiation dat
 - **D3.js**: For creating interactive charts and data visualizations.
 - **Bootstrap**: For a responsive and modern user interface.
 - **SQL Server**: The database used to store and query expiation and offence data.
-- **ASP.NET Identity**: For implementing user authentication and authorization.
 ### 2. Data Dashboards and Visualizations 📊
 - Displays **key statistics** such as total fines, average speeds, and offence frequency.
 - Shows **drinking statistics** like BAC (Blood Alcohol Content) levels.
