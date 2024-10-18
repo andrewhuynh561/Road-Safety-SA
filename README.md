@@ -1,7 +1,7 @@
 # Road Safety SA
 Welcome to the **Road Safety SA** project! This project visualizes expiation data and road safety statistics in South Australia. With interactive maps and data dashboards, users can explore road safety information, expiation details, and understand how traffic regulations are enforced.
 ### 1. Interactive Map for DataCrash 🌍
-- Displays **real-time road crash data** across South Australia.
+- Displays **Data Crash** across South Australia from 2018-2023(src:https://data.sa.gov.au/).
 - Uses **ArcGIS API** for map visualizations, allowing users to explore data interactively.
 - Highlights crash-prone areas and allows for zooming and exploration of specific regions.
 ## Technologies Used
