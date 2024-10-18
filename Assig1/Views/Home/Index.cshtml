@@ -21,15 +21,13 @@
 <!-- Div to hold the map -->
 <div class="row">
     <div class="col-12">
-        <h3 class="">Explore Expiation Data on the Map </h3>
+        <h3 class="">Explore Data Crash on the Map </h3>
         <h4 class="">User:Okokanhem0506  </h4>
         <h5 class="">Password: SouthAus24</h5>
-        <div id="mapDiv" style="width: 100%; height: 600px;"></div> <!-- Map will render here -->
+        <div id="mapDiv" style="width: 100%; height: 600px;"></div> 
     </div>
 </div>
 
-
-<!-- ArcGIS JavaScript API -->
 <script src="https://js.arcgis.com/4.30/"></script>
 <script>
     require([
@@ -42,19 +40,18 @@
         // Use your ArcGIS Online WebMap ID
         const webmap = new WebMap({
             portalItem: {
-                id: "60342aa3b2774fdcbcca728c583afd98" // Your webmap ID
+                id: "60342aa3b2774fdcbcca728c583afd98" 
             }
         });
 
-        // Initialize the MapView centered on Adelaide
         const view = new MapView({
-            container: "mapDiv",  // Div where the map is displayed
+            container: "mapDiv",  
             map: webmap,
-            zoom: 10,  // Zoom level for Adelaide
-            center: [138.6007, -34.9285]  // Coordinates for Adelaide City
+            zoom: 10,  
+            center: [138.6007, -34.9285]  
         });
 
-        // Add a BasemapGallery widget to allow users to switch basemaps
+  
         const basemapGallery = new BasemapGallery({
             view: view
         });
@@ -64,7 +61,7 @@
             content: basemapGallery
         });
 
-        // Add the widget to the UI
+
         view.ui.add(expand, "top-right");
     });
 </script>

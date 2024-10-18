@@ -120,7 +120,15 @@ text-align: center; /* Center the text */
 transition: all 0.3s ease; /* Smooth hover transition */
 background-color: transparent; /* No background by default */
 }
-
+.navbar-nav .nav-link-1 {
+    color: #ffffff; /* White text */
+    padding: 1rem 1.5rem; /* Padding around each link */
+    text-transform: uppercase; /* Uppercase text */
+    font-weight: 600; /* Make text bold */
+    text-align: center; /* Center the text */
+    transition: all 0.3s ease; /* Smooth hover transition */
+    background-color: transparent; /* No background by default */
+}
 /* Hover effect */
 .navbar-nav .nav-link:hover {
     background-color: #003366; 
